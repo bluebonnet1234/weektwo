@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>TicTacToeBoard</title>
+	<style>
+		#ttt-wrapper {
+			display: flex;
+			justify-content: center;
+			padding-top: 150px;
+		}
+
+		#ttt-board {
+			display: grid;
+			grid-gap: 5px;
+			grid-template-columns: repeat(3, 100px);
+			padding: 20px;
+			border-radius: 5px;
+			background-color: #A7EDF0;
+		}
+
+		.ttt-tile {
+			height: 100px;
+			width: 100px;
+			border: 1px solid grey;
+			font-size: 50px;
+			line-height: 100px;
+			text-align: center;
+			box-sizing: border-box;
+		}
+
+		.ttt-tile:hover {
+			background-color: #1CA8AF;
+			color: #FFF;
+		}
+	</style>
+</head>
+<body>
+	<div id="ttt-wrapper">
+		<div id="ttt-board">
+			<div class="ttt-tile">X</div>
+			<div class="ttt-tile"></div>
+			<div class="ttt-tile"></div>
+			<div class="ttt-tile"></div>
+			<div class="ttt-tile">O</div>
+			<div class="ttt-tile"></div>
+			<div class="ttt-tile"></div>
+			<div class="ttt-tile"></div>
+			<div class="ttt-tile">X</div>
+		</div>
+	</div>
+</body>
+</html>
