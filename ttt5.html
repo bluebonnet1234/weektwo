@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>TicTacToeBoard</title>
+	<style>
+		h1 {
+			text-align: center;
+			padding: 20px;
+		}
+
+		#ttt-wincondition {
+			height: 50px;
+			width: 80%;
+			margin: 0 auto;
+			color: #1CA8AF;
+			line-height: 50px;
+			text-align: center;
+			font-family: "Arial Black";
+  			font-size: 40px;  			
+		}
+
+		.square {
+			height: 100px;
+			width: 100px;
+			border: 1px solid grey;
+			font-size: 50px;
+			line-height: 100px;
+			text-align: center;
+			box-sizing: border-box;
+			position: absolute;
+			background-color: #A7EDF0;
+		}
+
+		.square:hover {
+			background-color: #1CA8AF;
+			color: #FFF;
+			cursor: pointer;
+		}
+
+
+		#sq0, #sq1, #sq2 {
+			top: 30%;
+		}
+
+		#sq3, #sq4, #sq5 {
+			top: calc(30% + 105px);
+		}
+
+		#sq6, #sq7, #sq8 {
+			top: calc(30% + 210px);
+		}
+
+		#sq0, #sq3, #sq6 {
+			left: calc(50% - 155px);
+		}
+
+		#sq1, #sq4, #sq7{
+			left: calc(50% - 50px);
+		}
+
+		#sq2, #sq5, #sq8{
+			left: calc(50% + 55px);
+		}
+
+		#ttt-turn {
+			border: 4px solid #A7EDF0;
+			position: absolute;
+			top: calc(30% + 320px);
+			left: calc(50% - 75px);
+			width: 150px;
+			text-align: center;
+			font-size: 20px;
+			line-height: 30px;
+			border-radius: 20px;
+			background-color: grey;
+			color: #A7EDF0;
+		}
+
+		.popup {
+			display: none;
+		}
+
+		#ttt-popup-back {
+			position: fixed;
+			z-index: 1;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			background-color: #ebebeb;
+		}
+
+		#ttt-popup-body {
+			position: absolute;
+			z-index: 2;
+			top: 50%;
+			left: 50%;
+			width: 200px;
+			height: 150px;		
+			background-color: #FFF;
+			text-align: center;
+			padding: 10px;
+			font-size: 20px;
+			border: 4px solid #A7EDF0;
+			border-radius: 10px;
+			transform: translate(-50%, -50%);
+		}
+
+		#ttt-popup-close {
+			position: absolute;
+			top: 15px;
+			right: 15px;
+			width: 30px;
+			height: 30px;
+			background-color: #A7EDF0;
+			font-size: 25px;
+			font-weight: bold;
+			line-height: 30px;			
+			border-radius: 50%;
+		}
+
+		#ttt-popup-close:hover,
+		#ttt-start:hover {
+			cursor: pointer;
+		}
+
+		#ttt-popup-text {
+			text-align: center;
+			padding-top: 40px;
+		}
+
+		#ttt-start {
+			padding: 10px;
+			width: 200px;
+			height: 60px;
+			position: absolute;
+			bottom: 50px;
+			right: 50px;
+			font-size: 20px;
+		}
+
+	</style>
+</head>
+<body>
+	<h1>TIC TAC TOE BOARD</h1>
+	<div id="ttt-wincondition">
+	</div>
+	<div id="ttt-turn"><span>X/O</span>'s turn</div>
+	<button id="ttt-start">Start Game</button>
+	<div class="popup">
+		<div id="ttt-popup-back"></div>
+		<div id="ttt-popup-body">
+			<div id="ttt-popup-close">&times;</div>
+			<p id="ttt-popup-text">Square 0</p>
+		</div>
+	</div>
+	<script>
+		const NUM_SQUARES = 9;
+		for (i=0; i<NUM_SQUARES; i++)
+		{
+			id = "sq"+i;
+			document.write( "<div class='square' id='" + id + "'></div>" );
+		}
+
+		//Get random number between 0 and 6
+		//If even - start with X
+		//If odd - start with O
+		function getStartingTurn() {
+			let randomNum = Math.floor(Math.random() * 6);
+			let isEven = randomNum % 2 == 0;
+			return (isEven ? 'X' : 'O');
+		}
+
+		function createWinConditions(moves) {
+			let winConditions = [];
+
+			//across
+			for(let i=0; i<=6; i+=3){
+				let across = moves[i] + moves[i+1] + moves[i+2];
+				winConditions.push(across);
+			}
+
+			//down
+			for(let j=0; j<=2; j++){
+				let down = moves[j] + moves[j+3] + moves[j+6];
+				winConditions.push(down);
+			}
+
+			//diagonal
+			winConditions.push(moves[0] + moves[4] + moves[8]);
+			winConditions.push(moves[2] + moves[4] + moves[6]);
+
+			//console.log(winConditions);
+			checkGameStatus(winConditions);
+		}
+
+		function checkGameStatus(winConditions) {
+			let endGame = false;
+			let gameStatus = '';
+
+			if (winConditions.includes('XXX')) {
+				gameStatus = 'Game Over XXX Wins!';
+				endGame = true;				
+			}
+			else if (winConditions.includes('OOO')) {
+				gameStatus = 'Game Over OOO Wins!';
+				endGame = true;
+			}
+			else {
+				//Check each string for '-'
+				let hyphens = winConditions.filter(pattern => pattern.includes('-'));
+				if (!hyphens.length) {
+					gameStatus = 'Game Over Stalemate!';
+					endGame = true;
+				}
+			}
+
+			if (endGame){
+				document.getElementById('ttt-wincondition').innerText = gameStatus;
+
+				const allSquares = document.querySelectorAll('.square');
+				for (let i = 0; i < NUM_SQUARES; i++){
+					allSquares[i].setAttribute('style', 'pointer-events: none;');
+				}				
+			}
+		}
+
+		const addXOToSquare = function() {
+			// const popupDiv = document.querySelector('.popup');
+			// const popupText = document.getElementById('ttt-popup-text');
+			// let squareNumber =  this.id.charAt(2);
+			
+			if (!this.innerText){
+				let turnSpan = document.querySelector('#ttt-turn > span');
+				let currentTurn = turnSpan.innerText;
+				this.innerText = currentTurn;
+				let nextTurn = currentTurn == 'X' ? 'O' : 'X';
+				turnSpan.innerText = nextTurn;
+
+				//popupText.innerText = 'Square ' + squareNumber;
+				//popupDiv.style.display = 'block';
+
+				//Create moves array
+				let moves = [0,1,2,3,4,5,6,7,8].map((sqrNumber) => {
+					let sqrDiv = document.getElementById('sq' + sqrNumber);
+					let sqrValue = sqrDiv.innerText;
+					if (!sqrValue) {
+						sqrValue = '-';
+					}
+					return sqrValue;
+				});
+				
+				//console.log(moves);
+				createWinConditions(moves);
+			}
+		};
+
+		window.onload = function() {
+			const allSquares = document.querySelectorAll('.square');
+			for (let i = 0; i < NUM_SQUARES; i++){
+				allSquares[i].addEventListener('click', addXOToSquare);
+			}
+
+			// const closePopup = document.getElementById('ttt-popup-close');
+			// closePopup.addEventListener('click', function(){
+			// 	const popupDiv = document.querySelector('.popup');
+			// 	popupDiv.style.display = 'none';
+			// });
+
+			const turnSpan = document.querySelector('#ttt-turn > span');
+			turnSpan.innerText = getStartingTurn();
+
+			const startButton = document.getElementById('ttt-start');
+			startButton.onclick = function() {
+				allSquares.forEach((sqr) => {
+					sqr.innerText = '';
+					sqr.removeAttribute('style', 'pointer-events: none;');
+				});
+				document.getElementById('ttt-wincondition').innerText = '';
+				turnSpan.innerText = getStartingTurn();
+			}
+		}
+	</script>
+</body>
+</html>
