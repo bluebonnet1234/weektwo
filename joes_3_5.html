@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Joe’s Hotdogs</title>
+	<style>
+		h1 {
+			text-align: center;
+			background-color: rgb(223, 155, 73);
+			height: 80px;
+			line-height: 80px;
+		}
+
+		h2 {
+			padding: 0px 20px;
+			width: 250px;
+			text-align: center;
+		}
+
+		#jhmenu, #jhcart {
+			width: 250px;
+			padding: 10px;
+			border: 1px solid rgb(223, 155, 73);
+		}
+
+		button {
+			padding: 5px 10px;
+		}
+
+		th {
+			background-color: rgb(223, 155, 73);
+		}
+
+		th, td {
+			text-align: left;
+			padding: 5px;
+		}
+
+		#jhcart {
+			display: grid;
+			grid-gap: 5px;
+			grid-template-columns: auto 80px;
+		}
+
+		.menuheader {
+			font-weight: bold;
+			color: rgb(223, 155, 73);
+		}
+	</style>
+</head>
+<body>
+	<h1>Joe's Hotdogs</h1>
+	<h2>Menu</h2>
+	<div id="jhmenu"></div>
+	<br />
+	<input type="text" name="item" id="jhitem"/>&nbsp;
+	<button type="button" id="jhaddToCart">Add to Cart</button>
+	<h2>Cart</h2>
+	<div id="jhcart"></div>
+	<br />
+	<button type="button" id="jhcheckoutCart">Checkout</button>
+	<script>
+		// Joe’s has only 4 items:  hotdogs, fries, soda and sauerkraut.  The cost of the items is $4, $3.50, $1.50, $1 respectively.  
+		//JSON object
+		const jsonMenu = {
+			"hotdogs": "4",
+			"fries": "3.50",
+			"soda": "1.50",
+			"sauerkraut": "1"
+		}
+
+		function menuFromJson(menuJson)
+		{
+			let menuRows = [];
+			let htmlStr = '<table style="width:100%"><tr><th style="width:75%">Item</th><th>Price</th></tr>';
+			
+			for(item in menuJson)
+			{
+				menuRows.push('<tr><td>' + item + '</td><td>$' + menuJson[item] + '</td></tr>');
+			}
+			htmlStr = htmlStr + menuRows.join('') + '</table>';
+			return htmlStr;
+		}
+
+		document.getElementById('jhmenu').innerHTML = menuFromJson(jsonMenu);
+
+
+		// Part 3:
+		const cartEntries = [];
+		Object.keys(jsonMenu).forEach((item) => cartEntries[item] = 0);
+
+
+		// Part 4: 
+		function addToCart()	{
+			const cartItem = document.getElementById('jhitem').value.toLowerCase();
+
+			if (Object.keys(jsonMenu).includes(cartItem)){
+				cartEntries[cartItem]++;
+			}
+
+			const cart = document.getElementById('jhcart');
+			let cartRows = [];
+			let cartHtml = '<div class="menuheader">Item</div><div class="menuheader">Quantity</div>';
+			
+			for(item in cartEntries)
+			{
+				if (cartEntries[item]) {
+					cartRows.push('<div>' + item + '</div><div>' + cartEntries[item] + '</div>');
+				}
+			}
+			cartHtml = cartHtml + cartRows.join('');
+			cart.innerHTML = cartHtml;			
+		}
+
+		//Part 5:
+		function PurchasedItem(name, qty, unitcost){
+			this.name = name;
+			this.quantity = qty;
+			this.cost = qty * unitcost;
+		}
+
+		function checkoutCart() {
+			let purchasedItems = [];
+			for(item in cartEntries){
+				if (cartEntries[item]) {
+					purchasedItems.push(new PurchasedItem(item, cartEntries[item], jsonMenu[item]));
+				}
+			}
+
+			let totalPurchaseCost = purchasedItems.reduce((a,b) => a + b.cost, 0.0);
+			let orderDetails = purchasedItems.map((item) => item.name + '\t-\tQuantity: ' + item.quantity + '\t-\tItem Cost $' + item.cost);
+			orderDetails = orderDetails.join('\n') + '\nTotal Cost $' + totalPurchaseCost;
+
+			//reset
+			document.getElementById('jhitem').value = '';
+			document.getElementById('jhcart').innerHTML = '';
+			for(item in cartEntries){
+				cartEntries[item] = 0;
+			}
+
+			//display purchase details
+			alert(orderDetails);
+		}
+
+		window.onload = function(){
+			document.getElementById('jhaddToCart').addEventListener('click', addToCart);
+			document.getElementById('jhcheckoutCart').addEventListener('click', checkoutCart);
+		}
+
+	</script>
+</body>
+</html>

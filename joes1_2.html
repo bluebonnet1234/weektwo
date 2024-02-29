@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Joe’s Hotdogs</title>
+	<style>
+		h1 {
+			text-align: center;
+			background-color: rgb(223, 155, 73);
+			height: 80px;
+			line-height: 80px;
+		}
+
+		h2 {
+			padding: 0px 20px;
+			width: 250px;
+			text-align: center;
+		}
+
+		#jhmenuone, #jhmenutwo {
+			width: 250px;
+			padding: 10px;
+			border: 1px solid rgb(223, 155, 73);
+		}
+
+		#jhmenutwo {
+			display: grid;
+			grid-gap: 5px;
+			grid-template-columns: auto 80px;
+		}
+
+		th {
+			background-color: rgb(223, 155, 73);
+		}
+
+		th, td {
+			text-align: left;
+			padding: 5px;
+		}
+
+		.menuheader {
+			font-weight: bold;
+			color: rgb(223, 155, 73);
+		}
+	</style>
+</head>
+<body>
+	<h1>Joe's Hotdogs</h1>
+	<h2>Menu</h2>
+	<div id="jhmenuone"></div>
+	<br />
+	<div id="jhmenutwo"></div>
+	
+	<script>
+		// Joe’s has only 4 items:  hotdogs, fries, soda and sauerkraut.  The cost of the items is $4, $3.50, $1.50, $1 respectively. 
+		// Part 1:
+
+		//associative array
+		const arrMenu = [];
+		arrMenu["hotdogs"] = "4";
+		arrMenu["fries"] = "3.50";
+		arrMenu["soda"] = "1.50";
+		arrMenu["sauerkraut"] = "1";
+
+		//JSON object
+		const jsonMenu = {
+			"hotdogs": "4",
+			"fries": "3.50",
+			"soda": "1.50",
+			"sauerkraut": "1"
+		}
+
+		//function object
+		function MenuItem(name, price)
+		{
+			this.name = name;
+			this.price = price;
+		}
+		const arrObjectsMenu = [new MenuItem("hotdogs", "4"), new MenuItem("fries", "3.50"), new MenuItem("soda", "1.50"), new MenuItem("sauerkraut", "1")];
+
+		//Part 2:
+		function menuFromJson(menuJson)
+		{
+			let menuRows = [];
+			let htmlStr = '<table style="width:100%"><tr><th style="width:75%">Item</th><th>Price</th></tr>';
+			
+			for(item in menuJson)
+			{
+				menuRows.push('<tr><td>' + item + '</td><td>$' + menuJson[item] + '</td></tr>');
+			}
+			htmlStr = htmlStr + menuRows.join('') + '</table>';
+			return htmlStr;
+		}
+
+		document.getElementById('jhmenuone').innerHTML = menuFromJson(jsonMenu);
+
+
+		function menuFromObjectsArray(objectsArr)
+		{
+			let menuHtml = '<div class="menuheader">Item</div><div class="menuheader">Price</div>';
+			let menuList = objectsArr.map(item => "<div>" + item.name + "</div><div>$" + item.price + "</div>");
+			menuHtml += menuList.join('');
+
+			return menuHtml;
+		}
+	
+		document.getElementById('jhmenutwo').innerHTML = menuFromObjectsArray(arrObjectsMenu);
+	</script>
+</body>
+</html>
