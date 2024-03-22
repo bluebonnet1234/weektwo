@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Wordle Game</title>
+	<link rel="stylesheet" type="text/css" href="wordlestyles.css">
+	<script src="wordlescript.js"></script>
+</head>
+<body>
+	<h1>WORDLE</h1>
+	<div id="wdl-gameword" class="hide"></div>
+	<div id="wdl-container">
+		<div id="wdl-words"></div>
+		<!-- Keyboard Buttons -->
+		<div id="wdl-keyboard">
+			<div class="keysrow">
+				<button type="button" data-letter="Q" class="letterbtn">Q</button>
+				<button type="button" data-letter="W" class="letterbtn">W</button>
+				<button type="button" data-letter="E" class="letterbtn">E</button>
+				<button type="button" data-letter="R" class="letterbtn">R</button>
+				<button type="button" data-letter="T" class="letterbtn">T</button>
+				<button type="button" data-letter="Y" class="letterbtn">Y</button>
+				<button type="button" data-letter="U" class="letterbtn">U</button>
+				<button type="button" data-letter="I" class="letterbtn">I</button>
+				<button type="button" data-letter="O" class="letterbtn">O</button>
+				<button type="button" data-letter="P" class="letterbtn">P</button>
+			</div>
+			<div class="keysrow">
+				<button type="button" data-letter="A" class="letterbtn">A</button>
+				<button type="button" data-letter="S" class="letterbtn">S</button>
+				<button type="button" data-letter="D" class="letterbtn">D</button>
+				<button type="button" data-letter="F" class="letterbtn">F</button>
+				<button type="button" data-letter="G" class="letterbtn">G</button>
+				<button type="button" data-letter="H" class="letterbtn">H</button>
+				<button type="button" data-letter="J" class="letterbtn">J</button>
+				<button type="button" data-letter="K" class="letterbtn">K</button>
+				<button type="button" data-letter="L" class="letterbtn">L</button>
+			</div>
+			<div class="keysrow">
+				<button type="button" data-action="Enter" class="actionbtn">Enter</button>
+				<button type="button" data-letter="Z" class="letterbtn">Z</button>
+				<button type="button" data-letter="X" class="letterbtn">X</button>
+				<button type="button" data-letter="C" class="letterbtn">C</button>
+				<button type="button" data-letter="V" class="letterbtn">V</button>
+				<button type="button" data-letter="B" class="letterbtn">B</button>
+				<button type="button" data-letter="N" class="letterbtn">N</button>
+				<button type="button" data-letter="M" class="letterbtn">M</button>
+				<button type="button" data-action="Back" class="actionbtn">&#9003;</button>
+			</div>
+		</div>
+		<!-- Game Action Buttons -->
+		<div id="wdl-actions">
+			<button type="button" id="wdl-debug">Debug Mode</button>
+			<button type="button" id="wdl-restart">Play Again</button>
+		</div>
+	</div>
+	<!-- Congrats Animation Modal -->
+	<div id="wdl-success-popup">
+		<div id="wdl-popup-back"></div>
+		<div id="wdl-popup-body">
+			<div id="wdl-popup-close">&times;</div>
+			<p id="wdl-popup-text"><span style="color:green;">&check;&nbsp;</span>Congratulations!</p>
+		</div>
+	</div>
+	<!-- Alert Messages Model -->
+   <div id="wdl-alert">
+      <div id="wdl-alert-body">
+        <p id="wdl-alert-text"></p>
+      </div>
+   </div>
+</body>
+</html>
